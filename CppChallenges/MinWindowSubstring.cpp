@@ -2,6 +2,11 @@
 #include <string>
 using namespace std;
 
+string searchSubstring(string arr,int pos[]){
+
+  
+}
+
 string MinWindowSubstring(string strArr[], int arrLength) {
   
   int length = strArr[1].length();
@@ -50,10 +55,35 @@ string MinWindowSubstring(string strArr[], int arrLength) {
       if (strArr[1][strArr[1].find(strArr[0][0])]==strArr[1][i])
         tempCount++;
     }
-    if (tempCount == 1)
+    if (tempCount == 1){
       min=1;
+      temp = strArr[0].substr(min,max);
+      return temp;
+    }  
   }
-  temp = strArr[0].substr(min,max);
+  int tempNum = strArr[1].find(strArr[0][min]);
+  cout << tempNum << endl;
+  for (int i=min+1;i<max;i++){
+    for (int j=0;j<length;j++){
+      if (strArr[0][i]==strArr[1][tempNum]){
+        if (max - min > max - i)
+          pos[tempNum]=i;
+          min = 999999;
+          i=max;
+      }
+    }
+  }
+  for (int i=0;i<length;i++){
+    cout << pos[i] << endl;
+    if (pos[i]>max)
+      max = pos[i];
+
+    if (pos[i]<min){
+      min = pos[i];  
+    }
+  }
+  temp = strArr[0].substr(min,max+1);
+
   // code goes here  
   return temp;
 
