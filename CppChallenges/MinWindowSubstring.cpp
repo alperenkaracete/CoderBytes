@@ -2,9 +2,38 @@
 #include <string>
 using namespace std;
 
-string searchSubstring(string arr,int pos[]){
+void findMinMax(int& min, int& max,int length,int pos[]){
 
-  
+  for (int i=0;i<length;i++){
+    if (pos[i]>max)
+      max = pos[i];
+
+    if (pos[i]<min){
+      min = pos[i];  
+    }
+  }
+}
+
+void searchSubstring(string strArr[],int pos[],int& min,int& max){
+
+  int length;
+
+  length = strArr[1].length();
+
+  int tempNum = strArr[1].find(strArr[0][min]);
+
+  for (int i=min+1;i<max;i++){
+    for (int j=0;j<length;j++){
+      if (strArr[0][i]==strArr[1][tempNum]){
+        if (max - min > max - i)
+          pos[tempNum]=i;
+          min = 999999;
+          i=max;
+      }
+    }
+  }
+
+  findMinMax(min,max,length,pos);
 }
 
 string MinWindowSubstring(string strArr[], int arrLength) {
@@ -48,7 +77,7 @@ string MinWindowSubstring(string strArr[], int arrLength) {
     if (pos[i]<min)
       min = pos[i];  
   }
-  if (strArr[0][0]==strArr[0][1] && strArr[1].find(strArr[0][0])){
+  if (strArr[0][0]==strArr[0][1] && strArr[1].find(strArr[0][0] >= 0)){
     int tempCount = 0;
     for (int i=0;i<length;i++){
 
@@ -58,31 +87,25 @@ string MinWindowSubstring(string strArr[], int arrLength) {
     if (tempCount == 1){
       min=1;
       temp = strArr[0].substr(min,max);
+      strArr[0] = temp;
+      string test;
+      do {
+        test = temp;
+        searchSubstring(strArr,pos,min,max);
+        temp = strArr[0].substr(min,max+1);
+      }while(test!=temp);
       return temp;
     }  
   }
-  int tempNum = strArr[1].find(strArr[0][min]);
-  cout << tempNum << endl;
-  for (int i=min+1;i<max;i++){
-    for (int j=0;j<length;j++){
-      if (strArr[0][i]==strArr[1][tempNum]){
-        if (max - min > max - i)
-          pos[tempNum]=i;
-          min = 999999;
-          i=max;
-      }
-    }
-  }
-  for (int i=0;i<length;i++){
-    cout << pos[i] << endl;
-    if (pos[i]>max)
-      max = pos[i];
 
-    if (pos[i]<min){
-      min = pos[i];  
-    }
-  }
   temp = strArr[0].substr(min,max+1);
+  strArr[0] = temp;
+  string test;
+  do {
+    test = temp;
+    searchSubstring(strArr,pos,min,max);
+    temp = strArr[0].substr(min,max+1);
+  }while(test!=temp);
 
   // code goes here  
   return temp;
